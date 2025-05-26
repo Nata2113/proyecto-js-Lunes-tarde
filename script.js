@@ -2,7 +2,6 @@ const students = [];
 const tableBody = document.querySelector("#studentsTable tbody");
 const averageDiv = document.getElementById("average");
 
-// Captura el evento del formulario
 document.getElementById("studentForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -20,7 +19,6 @@ document.getElementById("studentForm").addEventListener("submit", function (e) {
     renderTable();
 });
 
-// Renderiza la tabla de alumnos
 function renderTable() {
     tableBody.innerHTML = "";
 
@@ -58,9 +56,9 @@ function renderTable() {
     });
 
     calcularPromedio();
+    actualizarResumen();
 }
 
-// Función para eliminar estudiante
 function deleteStudent(index) {
     const confirmDelete = confirm("¿Estás seguro de que quieres eliminar este estudiante?");
     if (confirmDelete) {
@@ -69,7 +67,6 @@ function deleteStudent(index) {
     }
 }
 
-// Función para editar estudiante
 function editStudent(index) {
     const student = students[index];
     const row = tableBody.children[index];
@@ -108,7 +105,6 @@ function editStudent(index) {
     actionsCell.appendChild(cancelBtn);
 }
 
-// Cálculo del promedio
 function calcularPromedio() {
     if (students.length === 0) {
         averageDiv.textContent = "Promedio General del Curso: NO DISPONIBLE";
@@ -118,4 +114,15 @@ function calcularPromedio() {
     const suma = students.reduce((acc, student) => acc + student.grade, 0);
     const promedio = suma / students.length;
     averageDiv.textContent = `Promedio General del Curso: ${promedio.toFixed(2)}`;
+}
+
+// NUEVA FUNCIÓN: resumen de estudiantes
+function actualizarResumen() {
+    const total = students.length;
+    const aprobados = students.filter(student => student.grade >= 4.0).length;
+    const reprobados = students.filter(student => student.grade < 4.0).length;
+
+    document.getElementById("total").textContent = total;
+    document.getElementById("approved").textContent = aprobados;
+    document.getElementById("failed").textContent = reprobados;
 }
